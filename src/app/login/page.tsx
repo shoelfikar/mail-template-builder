@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuthStore } from '@/stores/authStore';
 import toast from 'react-hot-toast';
-import { Mail, Lock, Loader2 } from 'lucide-react';
+import { Mail, Lock, Loader2, Eye, EyeOff } from 'lucide-react';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -22,6 +22,7 @@ export default function LoginPage() {
     email: '',
     password: '',
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   const validateForm = () => {
     const newErrors = {
@@ -80,7 +81,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4 transition-colors">
-      <div className="w-full max-w-md">
+      <div className="w-full max-w-md px-6">
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold mb-2 text-gray-900 dark:text-white">
@@ -100,18 +101,18 @@ export default function LoginPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-6">
               {/* Email Field */}
-              <div className="space-y-2">
+              <div className="space-y-4">
                 <Label htmlFor="email">Email</Label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                  <Mail className="absolute left-3 top-4.5 h-4 w-4 text-gray-400" />
                   <Input
                     id="email"
                     name="email"
                     type="email"
                     placeholder="you@example.com"
-                    className="pl-10"
+                    className="pl-10 h-12 focus-visible:ring-0 focus-visible:ring-offset-0"
                     value={formData.email}
                     onChange={handleChange}
                     disabled={isLoading}
@@ -123,20 +124,32 @@ export default function LoginPage() {
               </div>
 
               {/* Password Field */}
-              <div className="space-y-2">
+              <div className="space-y-4">
                 <Label htmlFor="password">Password</Label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                  <Lock className="absolute left-3 top-4 h-4 w-4 text-gray-400" />
                   <Input
                     id="password"
                     name="password"
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
                     placeholder="••••••••"
-                    className="pl-10"
+                    className="pl-10 pr-10 h-12 focus-visible:ring-0 focus-visible:ring-offset-0"
                     value={formData.password}
                     onChange={handleChange}
                     disabled={isLoading}
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                    disabled={isLoading}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4 cursor-pointer" />
+                    ) : (
+                      <Eye className="h-4 w-4 cursor-pointer" />
+                    )}
+                  </button>
                 </div>
                 {errors.password && (
                   <p className="text-sm text-red-600">{errors.password}</p>
@@ -146,7 +159,7 @@ export default function LoginPage() {
               {/* Submit Button */}
               <Button
                 type="submit"
-                className="w-full"
+                className="w-full h-12 my-6 cursor-pointer"
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -161,7 +174,7 @@ export default function LoginPage() {
             </form>
 
             {/* Demo Credentials */}
-            <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+            {/* <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
               <p className="text-sm font-medium text-blue-900 dark:text-blue-300 mb-2">
                 Demo Credentials:
               </p>
@@ -171,14 +184,14 @@ export default function LoginPage() {
               <p className="text-xs text-blue-700 dark:text-blue-400">
                 Password: demo123
               </p>
-            </div>
+            </div> */}
 
             {/* Back to Home */}
-            <div className="mt-6 text-center">
+            {/* <div className="mt-6 text-center">
               <Link href="/" className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">
                 Back to Home
               </Link>
-            </div>
+            </div> */}
           </CardContent>
         </Card>
       </div>
