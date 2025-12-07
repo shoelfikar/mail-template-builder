@@ -1,14 +1,14 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Navbar } from '@/components/auth/Navbar';
+import { AppLayout } from '@/components/layout';
 import { Mail, FileText, Eye, Download } from 'lucide-react';
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 transition-colors">
-      <Navbar />
-      <div className="container mx-auto px-4 py-16">
+    <AppLayout>
+      <div className="bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 transition-colors min-h-screen">
+        <div className="container mx-auto px-6 py-16">
         {/* Header */}
         <div className="text-center mb-16">
           <h1 className="text-5xl font-bold mb-4 text-gray-900 dark:text-white">
@@ -101,7 +101,8 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+        </div>
       </div>
-    </div>
+    </AppLayout>
   );
 }

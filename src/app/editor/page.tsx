@@ -3,8 +3,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
+import { AppLayout } from '@/components/layout';
 import { EmailEditor, EditorToolbar } from '@/components/editor';
-import { CKEditorComponent } from '@/components/editor/CKEditorComponent';
+import { TinyMCEComponent } from '@/components/editor/TinyMCEComponent';
 import type { EditorMode } from '@/components/editor/EditorToolbar';
 import { useEditorStore } from '@/stores/editorStore';
 import type { EmailTemplate } from '@/types/template';
@@ -238,17 +239,20 @@ function EditorContent() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center transition-colors">
-        <div className="text-center">
-          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent text-blue-600 dark:text-blue-400"></div>
-          <p className="mt-4 text-gray-600 dark:text-gray-300">Loading template...</p>
+      <AppLayout showHeader={false}>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent text-blue-600 dark:text-blue-400"></div>
+            <p className="mt-4 text-gray-600 dark:text-gray-300">Loading template...</p>
+          </div>
         </div>
-      </div>
+      </AppLayout>
     );
   }
 
   return (
-    <div className="h-screen flex flex-col bg-gray-50 dark:bg-gray-900 transition-colors">
+    <AppLayout showHeader={false}>
+      <div className="h-screen flex flex-col">
       <EditorToolbar
         templateName={templateName}
         templateSubject={templateSubject}
@@ -293,7 +297,7 @@ function EditorContent() {
             height="calc(100vh - 73px)"
           />
         ) : (
-          <CKEditorComponent
+          <TinyMCEComponent
             ref={codeEditorRef}
             initialHtml={templateHtml}
             onChange={handleEditorChange}
@@ -301,7 +305,8 @@ function EditorContent() {
           />
         )}
       </div>
-    </div>
+      </div>
+    </AppLayout>
   );
 }
 

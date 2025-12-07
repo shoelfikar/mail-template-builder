@@ -7,19 +7,15 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
+import { AppLayout } from '@/components/layout';
+import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { useAuthStore } from '@/stores/authStore';
 import toast from 'react-hot-toast';
 import { ArrowLeft, Mail, User, Calendar, LogOut, Shield } from 'lucide-react';
 
-export default function ProfilePage() {
+function ProfileContent() {
   const router = useRouter();
-  const { user, isAuthenticated, logout } = useAuthStore();
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      router.push('/login');
-    }
-  }, [isAuthenticated, router]);
+  const { user, logout } = useAuthStore();
 
   const handleLogout = () => {
     logout();
@@ -29,17 +25,19 @@ export default function ProfilePage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center transition-colors">
-        <div className="text-center">
-          <p className="text-gray-600 dark:text-gray-300">Loading...</p>
+      <AppLayout>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <p className="text-gray-600 dark:text-gray-300">Loading...</p>
+          </div>
         </div>
-      </div>
+      </AppLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
-      <div className="container mx-auto px-4 py-8">
+    <AppLayout>
+      <div className="container mx-auto px-6 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
@@ -188,7 +186,7 @@ export default function ProfilePage() {
               </CardHeader>
               <CardContent className="space-y-2">
                 <Link href="/templates">
-                  <Button variant="outline" className="w-full bg-white dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-gray-700">
+                  <Button variant="outline" className="w-full bg-white dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-gray-700 mb-2">
                     View Templates
                   </Button>
                 </Link>
@@ -202,6 +200,14 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
-    </div>
+    </AppLayout>
+  );
+}
+
+export default function ProfilePage() {
+  return (
+    <ProtectedRoute>
+      <ProfileContent />
+    </ProtectedRoute>
   );
 }

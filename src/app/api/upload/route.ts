@@ -56,8 +56,9 @@ export async function POST(request: NextRequest) {
     // Return public URL
     const url = `/uploads/images/${filename}`;
 
-    // CKEditor expects this specific format
+    // TinyMCE expects 'location' field, but we also include 'url' for compatibility
     return NextResponse.json({
+      location: url,
       url: url,
       // Also include additional data for compatibility
       uploaded: true,

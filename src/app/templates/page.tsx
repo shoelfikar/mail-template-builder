@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Navbar } from '@/components/auth/Navbar';
+import { AppLayout } from '@/components/layout';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { TemplateGrid, DeleteTemplateDialog } from '@/components/templates';
 import type { EmailTemplate } from '@/types/template';
@@ -138,9 +138,8 @@ function TemplatesContent() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
-      <Navbar />
-      <div className="container mx-auto px-4 py-8">
+    <AppLayout>
+      <div className="container mx-auto px-6 py-8">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
           <div>
@@ -239,7 +238,7 @@ function TemplatesContent() {
           isDeleting={isDeleting}
         />
       </div>
-    </div>
+    </AppLayout>
   );
 }
 
