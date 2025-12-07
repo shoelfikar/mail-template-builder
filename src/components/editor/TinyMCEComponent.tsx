@@ -35,6 +35,22 @@ export const TinyMCEComponent = forwardRef<TinyMCEComponentRef, TinyMCEComponent
     onChangeRef.current = onChange;
   }, [onChange]);
 
+  // Hide tox-promotion banner
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.innerHTML = `
+      .tox-promotion,
+      .tox-statusbar__branding {
+        display: none !important;
+      }
+    `;
+    document.head.appendChild(style);
+
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
   // Expose methods via ref
   useImperativeHandle(ref, () => ({
     getHtml: () => {
@@ -71,6 +87,7 @@ export const TinyMCEComponent = forwardRef<TinyMCEComponentRef, TinyMCEComponent
         }}
         init={{
           height: height,
+          promotion: false,
           skin: isDark ? 'oxide-dark' : 'oxide',
           content_css: isDark ? 'dark' : 'default',
           plugins: [

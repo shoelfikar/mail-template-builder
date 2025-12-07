@@ -24,7 +24,7 @@ export function AppLayout({ children, showHeader = true }: AppLayoutProps) {
       >
         {showHeader && (
           <header className="sticky top-0 z-40 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 transition-colors">
-            <div className="flex items-center justify-between h-16 px-6">
+            <div className="flex items-center justify-between px-6 py-8" style={{marginBottom: '8px'}}>
               <div className="flex-1">
                 {/* Page title can be added here if needed */}
               </div>
@@ -32,7 +32,7 @@ export function AppLayout({ children, showHeader = true }: AppLayoutProps) {
           </header>
         )}
 
-        <main className="min-h-[calc(100vh-4rem)]">
+        <main className="min-h-[calc(100vh-72px)]">
           {children}
         </main>
       </div>

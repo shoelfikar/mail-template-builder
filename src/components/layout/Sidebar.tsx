@@ -121,7 +121,7 @@ function SidebarMenuItem({ item, isCollapsed }: { item: MenuItem; isCollapsed: b
         <button
           onClick={toggleOpen}
           className={cn(
-            'w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors group',
+            'w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors group cursor-pointer',
             'hover:bg-gray-100 dark:hover:bg-gray-800',
             isCollapsed && 'justify-center px-3'
           )}
@@ -144,11 +144,14 @@ function SidebarMenuItem({ item, isCollapsed }: { item: MenuItem; isCollapsed: b
         {!isCollapsed && (
           <div
             className={cn(
-              'ml-8 mt-1 overflow-hidden transition-all duration-500 ease-in-out',
-              isOpen ? 'max-h-screen' : 'max-h-0'
+              'ml-8 mt-1 overflow-hidden transition-all duration-300 ease-in-out cursor-pointer',
+              isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
             )}
           >
-            <div className="space-y-1">
+            <div className={cn(
+              'space-y-1 transition-transform duration-300',
+              isOpen ? 'translate-y-0' : '-translate-y-2'
+            )}>
               {item.children?.map((child) => (
                 <Link
                   key={child.id}
@@ -295,10 +298,10 @@ export function Sidebar() {
           {!isCollapsed && (
             <button
               onClick={toggleSidebar}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer"
               title="Collapse sidebar"
             >
-              <PanelLeftClose className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+              <PanelLeftClose className="w-5 h-5 text-gray-500 dark:text-gray-400 cursor-pointer" />
             </button>
           )}
 
@@ -307,23 +310,24 @@ export function Sidebar() {
             <div
               ref={dropdownRef}
               className={cn(
-                'absolute top-full mt-2 bg-gray-950 border border-gray-800 rounded-lg shadow-xl z-[100] w-80',
-                isCollapsed ? 'left-20 ml-2' : 'left-4'
+                'absolute top-full mt-2 bg-gray-950 border border-gray-800 rounded-lg shadow-xl z-[100]',
+                'animate-in fade-in slide-in-from-top-2 duration-200',
+                isCollapsed ? 'left-20 ml-2 w-64' : 'left-4 right-4'
               )}
             >
               {/* Header */}
-              <div className="border-b border-gray-800 p-4">
-                <div className="flex items-center gap-3">
-                  <Avatar className="h-12 w-12">
-                    <AvatarFallback className="bg-gradient-to-br from-green-500 to-green-600 text-white font-semibold text-lg">
+              <div className="border-b border-gray-800 p-3">
+                <div className="flex items-center gap-2.5">
+                  <Avatar className="h-10 w-10">
+                    <AvatarFallback className="bg-gradient-to-br from-green-500 to-green-600 text-white font-semibold text-sm">
                       {user && getInitials(user.name)}
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex-1 text-left">
-                    <h3 className="text-base font-semibold text-white">
+                    <h3 className="text-sm font-semibold text-white">
                       {user?.name || 'User'}
                     </h3>
-                    <p className="text-sm text-gray-400">{user?.email || 'demo@kt.com'}</p>
+                    <p className="text-xs text-gray-400">{user?.email || 'demo@kt.com'}</p>
                   </div>
                 </div>
               </div>
@@ -334,33 +338,33 @@ export function Sidebar() {
                 <Link
                   href="/profile"
                   onClick={() => setShowUserMenu(false)}
-                  className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-800 transition-colors"
+                  className="flex items-center gap-2.5 px-3 py-3 rounded hover:bg-gray-800 transition-colors"
                 >
-                  <User className="w-5 h-5 text-gray-400" />
-                  <span className="text-sm text-gray-200">My Profile</span>
+                  <User className="w-4 h-4 text-gray-400" />
+                  <span className="text-xs text-gray-200">My Profile</span>
                 </Link>
 
                 {/* My Template */}
                 <Link
                   href="/templates"
                   onClick={() => setShowUserMenu(false)}
-                  className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-800 transition-colors"
+                  className="flex items-center gap-2.5 px-3 py-3 rounded hover:bg-gray-800 transition-colors"
                 >
-                  <Mail className="w-5 h-5 text-gray-400" />
-                  <span className="text-sm text-gray-200">My Template</span>
+                  <Mail className="w-4 h-4 text-gray-400" />
+                  <span className="text-xs text-gray-200">My Template</span>
                 </Link>
 
                 {/* Language */}
-                <div className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-gray-800 transition-colors">
-                  <div className="flex items-center gap-3">
-                    <Globe className="w-5 h-5 text-gray-400" />
-                    <span className="text-sm text-gray-200">Language</span>
+                <div className="flex items-center justify-between px-3 py-3 rounded hover:bg-gray-800 transition-colors cursor-pointer">
+                  <div className="flex items-center gap-2.5">
+                    <Globe className="w-4 h-4 text-gray-400" />
+                    <span className="text-xs text-gray-200">Language</span>
                   </div>
                   <div className="flex gap-1">
                     <button
                       onClick={() => setLanguage('en')}
                       className={cn(
-                        'px-3 py-1 rounded-md text-xs font-medium transition-colors',
+                        'px-2 py-0.5 rounded-md text-xs font-medium transition-colors cursor-pointer',
                         language === 'en'
                           ? 'bg-blue-600 text-white'
                           : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
@@ -371,7 +375,7 @@ export function Sidebar() {
                     <button
                       onClick={() => setLanguage('id')}
                       className={cn(
-                        'px-3 py-1 rounded-md text-xs font-medium transition-colors',
+                        'px-2 py-0.5 rounded-md text-xs font-medium transition-colors cursor-pointer',
                         language === 'id'
                           ? 'bg-blue-600 text-white'
                           : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
@@ -383,22 +387,22 @@ export function Sidebar() {
                 </div>
 
                 {/* Dark Mode */}
-                <div className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-gray-800 transition-colors">
-                  <div className="flex items-center gap-3">
-                    <Moon className="w-5 h-5 text-gray-400" />
-                    <span className="text-sm text-gray-200">Dark Mode</span>
+                <div className="flex items-center justify-between px-3 py-3 rounded hover:bg-gray-800 transition-colors cursor-pointer">
+                  <div className="flex items-center gap-2.5">
+                    <Moon className="w-4 h-4 text-gray-400" />
+                    <span className="text-xs text-gray-200">Dark Mode</span>
                   </div>
                   <button
                     onClick={toggleDarkMode}
                     className={cn(
-                      'relative w-11 h-6 rounded-full transition-colors',
+                      'relative w-9 h-5 rounded-full transition-colors cursor-pointer',
                       theme === 'dark' ? 'bg-blue-600' : 'bg-gray-700'
                     )}
                   >
                     <span
                       className={cn(
-                        'absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform',
-                        theme === 'dark' && 'translate-x-5'
+                        'absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full transition-transform',
+                        theme === 'dark' && 'translate-x-4'
                       )}
                     />
                   </button>
@@ -406,11 +410,11 @@ export function Sidebar() {
               </div>
 
               {/* Logout Button */}
-              <div className="border-t border-gray-800 p-3">
+              <div className="border-t border-gray-800 p-2">
                 <Button
                   onClick={handleLogout}
                   variant="outline"
-                  className="w-full justify-center h-11 text-sm font-medium text-gray-200 border-gray-700 hover:bg-gray-800 hover:text-white hover:border-gray-600"
+                  className="w-full justify-center h-9 text-xs font-medium text-gray-200 border-gray-700 hover:bg-gray-800 hover:text-white hover:border-gray-600 cursor-pointer"
                 >
                   Logout
                 </Button>
@@ -423,7 +427,7 @@ export function Sidebar() {
           <div className="p-2 border-b border-gray-200 dark:border-gray-800">
             <button
               onClick={toggleSidebar}
-              className="w-full p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              className="w-full p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer"
               title="Expand sidebar"
             >
               <PanelLeft className="w-5 h-5 text-gray-500 dark:text-gray-400 mx-auto" />
@@ -435,7 +439,7 @@ export function Sidebar() {
         {!isCollapsed && (
           <div className="p-4">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 cursor-pointer" />
               <Input
                 type="text"
                 placeholder="Search..."
@@ -450,7 +454,7 @@ export function Sidebar() {
         {isCollapsed && (
           <div className="p-4 flex justify-center">
             <button className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
-              <Search className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+              <Search className="w-5 h-5 text-gray-500 dark:text-gray-400 cursor-pointer" />
             </button>
           </div>
         )}
