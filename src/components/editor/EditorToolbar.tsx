@@ -21,10 +21,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useState } from 'react';
-import { Save, Download, Eye, ArrowLeft, X, Code2, Palette } from 'lucide-react';
+import { Save, Download, Eye, ArrowLeft, X } from 'lucide-react';
 import Link from 'next/link';
-
-export type EditorMode = 'visual' | 'code';
 
 interface EditorToolbarProps {
   templateName: string;
@@ -32,13 +30,11 @@ interface EditorToolbarProps {
   templateDescription?: string;
   templateCategory?: string;
   templateTags?: string[];
-  editorMode?: EditorMode;
   onTemplateNameChange: (name: string) => void;
   onTemplateSubjectChange: (subject: string) => void;
   onTemplateDescriptionChange?: (description: string) => void;
   onTemplateCategoryChange?: (category: string) => void;
   onTemplateTagsChange?: (tags: string[]) => void;
-  onEditorModeChange?: (mode: EditorMode) => void;
   onSave: () => void;
   onExport: () => void;
   onPreview: () => void;
@@ -52,13 +48,11 @@ export function EditorToolbar({
   templateDescription = '',
   templateCategory = '',
   templateTags = [],
-  editorMode = 'visual',
   onTemplateNameChange,
   onTemplateSubjectChange,
   onTemplateDescriptionChange,
   onTemplateCategoryChange,
   onTemplateTagsChange,
-  onEditorModeChange,
   onSave,
   onExport,
   onPreview,
@@ -101,30 +95,6 @@ export function EditorToolbar({
 
           {/* Right: Action buttons */}
           <div className="flex items-center gap-2">
-            {/* Editor Mode Toggle */}
-            <div className="flex items-center gap-1 border dark:border-gray-600 rounded-md p-1">
-              <Button
-                variant={editorMode === 'visual' ? 'default' : 'ghost'}
-                size="sm"
-                onClick={() => onEditorModeChange?.('visual')}
-                className="gap-2 h-8"
-              >
-                <Palette className="w-4 h-4" />
-                Drag & Drop
-              </Button>
-              <Button
-                variant={editorMode === 'code' ? 'default' : 'ghost'}
-                size="sm"
-                onClick={() => onEditorModeChange?.('code')}
-                className="gap-2 h-8"
-              >
-                <Code2 className="w-4 h-4" />
-                Rich Text
-              </Button>
-            </div>
-
-            <div className="w-px h-6 bg-gray-300 dark:bg-gray-600" />
-
             <Button
               variant="outline"
               size="sm"

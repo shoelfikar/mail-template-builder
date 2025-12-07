@@ -75,7 +75,7 @@ export const SidebarUserMenu = forwardRef<HTMLDivElement, SidebarUserMenuProps>(
           <Link
             href="/profile"
             onClick={onClose}
-            className="flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-gray-800 transition-colors"
+            className="flex items-center gap-2.5 px-3 py-3 rounded hover:bg-gray-800 transition-colors"
           >
             <User className="w-4 h-4 text-gray-400" />
             <span className="text-xs text-gray-200">My Profile</span>
@@ -85,14 +85,14 @@ export const SidebarUserMenu = forwardRef<HTMLDivElement, SidebarUserMenuProps>(
           <Link
             href="/templates"
             onClick={onClose}
-            className="flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-gray-800 transition-colors"
+            className="flex items-center gap-2.5 px-3 py-3 rounded hover:bg-gray-800 transition-colors"
           >
             <Mail className="w-4 h-4 text-gray-400" />
             <span className="text-xs text-gray-200">My Template</span>
           </Link>
 
           {/* Language */}
-          <div className="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-gray-800 transition-colors">
+          <div className="flex items-center justify-between px-3 py-2 rounded hover:bg-gray-800 transition-colors cursor-pointer">
             <div className="flex items-center gap-2.5">
               <Globe className="w-4 h-4 text-gray-400" />
               <span className="text-xs text-gray-200">Language</span>
@@ -101,7 +101,7 @@ export const SidebarUserMenu = forwardRef<HTMLDivElement, SidebarUserMenuProps>(
               <button
                 onClick={() => setLanguage('en')}
                 className={cn(
-                  'px-2 py-0.5 rounded-md text-xs font-medium transition-colors cursor-pointer',
+                  'px-2 py-0.5 rounded text-xs font-medium transition-colors cursor-pointer',
                   language === 'en'
                     ? 'bg-blue-600 text-white'
                     : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
@@ -112,7 +112,7 @@ export const SidebarUserMenu = forwardRef<HTMLDivElement, SidebarUserMenuProps>(
               <button
                 onClick={() => setLanguage('id')}
                 className={cn(
-                  'px-2 py-0.5 rounded-md text-xs font-medium transition-colors cursor-pointer',
+                  'px-2 py-0.5 rounded text-xs font-medium transition-colors cursor-pointer',
                   language === 'id'
                     ? 'bg-blue-600 text-white'
                     : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
@@ -124,7 +124,7 @@ export const SidebarUserMenu = forwardRef<HTMLDivElement, SidebarUserMenuProps>(
           </div>
 
           {/* Dark Mode */}
-          <div className="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-gray-800 transition-colors">
+          <div className="flex items-center justify-between px-3 py-3 rounded hover:bg-gray-800 transition-colors cursor-pointer">
             <div className="flex items-center gap-2.5">
               <Moon className="w-4 h-4 text-gray-400" />
               <span className="text-xs text-gray-200">Dark Mode</span>

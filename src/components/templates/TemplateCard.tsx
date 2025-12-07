@@ -31,13 +31,13 @@ export function TemplateCard({
     <Card className="group hover:shadow-md transition-shadow flex flex-col h-full dark:bg-gray-800 dark:border-gray-700">
       <CardHeader>
         <div className="flex items-start justify-between gap-2">
-          <div className="flex items-center gap-3 flex-1 min-w-0">
+          <div className="flex items-start gap-3 flex-1 min-w-0">
             <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center flex-shrink-0">
               <Mail className="w-5 h-5 text-blue-600 dark:text-blue-400" />
             </div>
             <div className="flex-1 min-w-0">
-              <CardTitle className="text-lg truncate">{template.name}</CardTitle>
-              <CardDescription className="text-sm break-words line-clamp-2">
+              <CardTitle className="text-lg truncate leading-none">{template.name}</CardTitle>
+              <CardDescription className="text-sm break-words line-clamp-2 mt-2">
                 {template.description || 'No description'}
               </CardDescription>
             </div>

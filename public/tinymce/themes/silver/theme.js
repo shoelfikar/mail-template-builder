@@ -26704,30 +26704,30 @@
         }
     });
 
-    // const promotionMessage = '💝Get all features';
-    // const promotionLink = 'https://www.tiny.cloud/tinymce-upgrade-to-cloud/?utm_campaign=self_hosted_upgrade_promo&utm_source=tiny&utm_medium=referral';
-    // const renderPromotion = (spec) => {
-    //     const components = spec.promotionLink ? [
-    //         {
-    //             dom: {
-    //                 tag: 'a',
-    //                 attributes: {
-    //                     'href': promotionLink,
-    //                     'rel': 'noopener',
-    //                     'target': '_blank',
-    //                     'aria-hidden': 'true'
-    //                 },
-    //                 classes: ['tox-promotion-link'],
-    //                 innerHtml: promotionMessage
-    //             }
-    //         }
-    //     ] : [];
-    //     return {
-    //         uid: spec.uid,
-    //         dom: spec.dom,
-    //         components
-    //     };
-    // };
+    const promotionMessage = '💝Get all features';
+    const promotionLink = 'https://www.tiny.cloud/tinymce-upgrade-to-cloud/?utm_campaign=self_hosted_upgrade_promo&utm_source=tiny&utm_medium=referral';
+    const renderPromotion = (spec) => {
+        const components = spec.promotionLink ? [
+            {
+                dom: {
+                    tag: 'a',
+                    attributes: {
+                        'href': promotionLink,
+                        'rel': 'noopener',
+                        'target': '_blank',
+                        'aria-hidden': 'true'
+                    },
+                    classes: ['tox-promotion-link'],
+                    innerHtml: promotionMessage
+                }
+            }
+        ] : [];
+        return {
+            uid: spec.uid,
+            dom: spec.dom,
+            components
+        };
+    };
 
     const setup$8 = (editor) => {
         const { sidebars } = editor.ui.registry.getAll();
@@ -27793,16 +27793,16 @@
             required$1('dom')
         ]
     });
-    // const partPromotion = partType$1.optional({
-    //     factory: {
-    //         sketch: renderPromotion
-    //     },
-    //     name: 'promotion',
-    //     schema: [
-    //         required$1('dom'),
-    //         required$1('promotionLink')
-    //     ]
-    // });
+    const partPromotion = partType$1.optional({
+        factory: {
+            sketch: renderPromotion
+        },
+        name: 'promotion',
+        schema: [
+            required$1('dom'),
+            required$1('promotionLink')
+        ]
+    });
     const partSocket = partType$1.optional({
         // factory: Fun.identity,
         name: 'socket',
@@ -27864,7 +27864,7 @@
             partMultipleToolbar,
             partSocket,
             partSidebar,
-            // partPromotion,
+            partPromotion,
             partThrobber,
             partViewWrapper,
             partEditorContainer
@@ -32682,7 +32682,7 @@
             const hasToolbar = isToolbarEnabled(editor);
             const hasMenubar = isMenubarEnabled(editor);
             const shouldHavePromotionLink = promotionEnabled(editor);
-            // const partPromotion = makePromotion(shouldHavePromotionLink);
+            const partPromotion = makePromotion(shouldHavePromotionLink);
             const hasAnyContents = hasMultipleToolbar || hasToolbar || hasMenubar;
             const getPartToolbar = () => {
                 if (hasMultipleToolbar) {
@@ -32695,7 +32695,7 @@
                     return [];
                 }
             };
-            const menubarCollection = [partMenubar];
+            const menubarCollection = [partPromotion, partMenubar];
             return OuterContainer.parts.header({
                 dom: {
                     tag: 'div',
@@ -32715,15 +32715,15 @@
                 sharedBackstage: backstages.popup.shared
             });
         };
-        // const makePromotion = (promotionLink) => {
-        //     return OuterContainer.parts.promotion({
-        //         dom: {
-        //             tag: 'div',
-        //             classes: ['tox-promotion'],
-        //         },
-        //         promotionLink
-        //     });
-        // };
+        const makePromotion = (promotionLink) => {
+            return OuterContainer.parts.promotion({
+                dom: {
+                    tag: 'div',
+                    classes: ['tox-promotion'],
+                },
+                promotionLink
+            });
+        };
         const makeSidebarDefinition = () => {
             const partSocket = OuterContainer.parts.socket({
                 dom: {
@@ -34776,14 +34776,14 @@
             const notificationRegion = value$2();
             // The NotificationManager uses the popup mothership (and sink)
             const getNotificationManagerImpl = () => NotificationManagerImpl(editor, { backstage: popups.backstage }, popups.getMothership(), notificationRegion);
-            // const getPromotionElement = () => {
-            //     return descendant(SugarElement.fromDom(editor.getContainer()), '.tox-promotion').map((promotion) => promotion.dom).getOrNull();
-            // };
+            const getPromotionElement = () => {
+                return descendant(SugarElement.fromDom(editor.getContainer()), '.tox-promotion').map((promotion) => promotion.dom).getOrNull();
+            };
             return {
                 renderUI,
                 getWindowManagerImpl: constant$1(windowMgr),
                 getNotificationManagerImpl,
-                // getPromotionElement
+                getPromotionElement
             };
         });
     };

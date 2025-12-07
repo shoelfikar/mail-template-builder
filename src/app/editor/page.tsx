@@ -4,9 +4,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { AppLayout } from '@/components/layout';
-import { EmailEditor, EditorToolbar } from '@/components/editor';
 import { TinyMCEComponent } from '@/components/editor/TinyMCEComponent';
-import type { EditorMode } from '@/components/editor/EditorToolbar';
+import { EditorToolbar } from '@/components/editor';
 import { useEditorStore } from '@/stores/editorStore';
 import type { EmailTemplate } from '@/types/template';
 import toast from 'react-hot-toast';
@@ -16,11 +15,9 @@ function EditorContent() {
   const searchParams = useSearchParams();
   const templateId = searchParams.get('id');
 
-  const visualEditorRef = useRef<any>(null);
-  const codeEditorRef = useRef<any>(null);
+  const editorRef = useRef<any>(null);
   const { setCurrentTemplate, isDirty, setDirty } = useEditorStore();
 
-  const [editorMode, setEditorMode] = useState<EditorMode>('visual');
   const [templateName, setTemplateName] = useState('Untitled Template');
   const [templateSubject, setTemplateSubject] = useState('');
   const [templateDescription, setTemplateDescription] = useState('');
@@ -74,36 +71,12 @@ function EditorContent() {
     }
   };
 
-  // Handle editor mode change
-  const handleEditorModeChange = (mode: EditorMode) => {
-    // Sync content between editors before switching
-    if (mode === 'code') {
-      // Switching to code mode: get HTML from visual editor
-      const html = visualEditorRef.current?.getHtml() || templateHtml;
-      setTemplateHtml(html);
-      // Update code editor after state is set
-      setTimeout(() => {
-        codeEditorRef.current?.setHtml(html);
-      }, 100);
-    } else {
-      // Switching to visual mode: get HTML from code editor
-      const html = codeEditorRef.current?.getHtml() || templateHtml;
-      setTemplateHtml(html);
-    }
-    setEditorMode(mode);
-  };
-
   const handleSave = async () => {
     try {
       setIsSaving(true);
 
-      // Get HTML from active editor
-      let html = templateHtml;
-      if (editorMode === 'visual') {
-        html = visualEditorRef.current?.getHtml() || templateHtml;
-      } else {
-        html = codeEditorRef.current?.getHtml() || templateHtml;
-      }
+      // Get HTML from editor
+      const html = editorRef.current?.getHtml() || templateHtml;
 
       const payload = {
         name: templateName,
@@ -153,15 +126,8 @@ function EditorContent() {
   };
 
   const handleExport = () => {
-    // Get HTML from active editor
-    let html = templateHtml;
-    let css = '';
-    if (editorMode === 'visual') {
-      html = visualEditorRef.current?.getHtml() || templateHtml;
-      css = visualEditorRef.current?.getCss() || '';
-    } else {
-      html = codeEditorRef.current?.getHtml() || templateHtml;
-    }
+    // Get HTML from editor
+    const html = editorRef.current?.getHtml() || templateHtml;
 
     const fullHtml = `
 <!DOCTYPE html>
@@ -170,9 +136,6 @@ function EditorContent() {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${templateSubject}</title>
-  <style>
-    ${css}
-  </style>
 </head>
 <body>
   ${html}
@@ -195,15 +158,8 @@ function EditorContent() {
   };
 
   const handlePreview = () => {
-    // Get HTML from active editor
-    let html = templateHtml;
-    let css = '';
-    if (editorMode === 'visual') {
-      html = visualEditorRef.current?.getHtml() || templateHtml;
-      css = visualEditorRef.current?.getCss() || '';
-    } else {
-      html = codeEditorRef.current?.getHtml() || templateHtml;
-    }
+    // Get HTML from editor
+    const html = editorRef.current?.getHtml() || templateHtml;
 
     const previewHtml = `
 <!DOCTYPE html>
@@ -214,7 +170,6 @@ function EditorContent() {
   <title>${templateSubject}</title>
   <style>
     body { margin: 0; padding: 20px; background: #f5f5f5; }
-    ${css}
   </style>
 </head>
 <body>
@@ -253,58 +208,47 @@ function EditorContent() {
   return (
     <AppLayout showHeader={false}>
       <div className="h-screen flex flex-col">
-      <EditorToolbar
-        templateName={templateName}
-        templateSubject={templateSubject}
-        templateDescription={templateDescription}
-        templateCategory={templateCategory}
-        templateTags={templateTags}
-        editorMode={editorMode}
-        onTemplateNameChange={(name) => {
-          setTemplateName(name);
-          setDirty(true);
-        }}
-        onTemplateSubjectChange={(subject) => {
-          setTemplateSubject(subject);
-          setDirty(true);
-        }}
-        onTemplateDescriptionChange={(description) => {
-          setTemplateDescription(description);
-          setDirty(true);
-        }}
-        onTemplateCategoryChange={(category) => {
-          setTemplateCategory(category);
-          setDirty(true);
-        }}
-        onTemplateTagsChange={(tags) => {
-          setTemplateTags(tags);
-          setDirty(true);
-        }}
-        onEditorModeChange={handleEditorModeChange}
-        onSave={handleSave}
-        onExport={handleExport}
-        onPreview={handlePreview}
-        isSaving={isSaving}
-        isDirty={isDirty}
-      />
+        <EditorToolbar
+          templateName={templateName}
+          templateSubject={templateSubject}
+          templateDescription={templateDescription}
+          templateCategory={templateCategory}
+          templateTags={templateTags}
+          onTemplateNameChange={(name) => {
+            setTemplateName(name);
+            setDirty(true);
+          }}
+          onTemplateSubjectChange={(subject) => {
+            setTemplateSubject(subject);
+            setDirty(true);
+          }}
+          onTemplateDescriptionChange={(description) => {
+            setTemplateDescription(description);
+            setDirty(true);
+          }}
+          onTemplateCategoryChange={(category) => {
+            setTemplateCategory(category);
+            setDirty(true);
+          }}
+          onTemplateTagsChange={(tags) => {
+            setTemplateTags(tags);
+            setDirty(true);
+          }}
+          onSave={handleSave}
+          onExport={handleExport}
+          onPreview={handlePreview}
+          isSaving={isSaving}
+          isDirty={isDirty}
+        />
 
-      <div className="flex-1 overflow-hidden">
-        {editorMode === 'visual' ? (
-          <EmailEditor
-            ref={visualEditorRef}
-            initialHtml={templateHtml}
-            onChange={handleEditorChange}
-            height="calc(100vh - 73px)"
-          />
-        ) : (
+        <div className="flex-1 overflow-hidden">
           <TinyMCEComponent
-            ref={codeEditorRef}
+            ref={editorRef}
             initialHtml={templateHtml}
             onChange={handleEditorChange}
             height="calc(100vh - 73px)"
           />
-        )}
-      </div>
+        </div>
       </div>
     </AppLayout>
   );
