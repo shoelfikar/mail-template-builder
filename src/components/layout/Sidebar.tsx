@@ -141,22 +141,29 @@ function SidebarMenuItem({ item, isCollapsed }: { item: MenuItem; isCollapsed: b
             </>
           )}
         </button>
-        {!isCollapsed && isOpen && item.children && (
-          <div className="ml-8 mt-1 space-y-1">
-            {item.children.map((child) => (
-              <Link
-                key={child.id}
-                href={child.href}
-                className={cn(
-                  'block px-4 py-2 rounded-lg text-sm transition-colors',
-                  pathname === child.href
-                    ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 font-medium'
-                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'
-                )}
-              >
-                {child.label}
-              </Link>
-            ))}
+        {!isCollapsed && (
+          <div
+            className={cn(
+              'ml-8 mt-1 overflow-hidden transition-all duration-500 ease-in-out',
+              isOpen ? 'max-h-screen' : 'max-h-0'
+            )}
+          >
+            <div className="space-y-1">
+              {item.children?.map((child) => (
+                <Link
+                  key={child.id}
+                  href={child.href}
+                  className={cn(
+                    'block px-4 py-2 rounded-lg text-sm transition-colors',
+                    pathname === child.href
+                      ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 font-medium'
+                      : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'
+                  )}
+                >
+                  {child.label}
+                </Link>
+              ))}
+            </div>
           </div>
         )}
       </div>
